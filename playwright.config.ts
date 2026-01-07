@@ -9,11 +9,11 @@ export default defineConfig({
   reporter: 'html',
 
   use:  {
-    headless: false,              // show browser
+    headless: process.env.CI ? true : false,  // headless on CI, headed locally
     viewport: null,               // do not force a fixed viewport
     launchOptions: {
       args: ['--start-maximized'], // ask Chrome to start maximized
-      slowMo: 1000,                // slow down so you can see actions
+      slowMo: process.env.CI ? 0 : 1000,  // no slowdown in CI
     },
     trace: 'on-first-retry',
   },
