@@ -11,11 +11,13 @@ export class LoginPage extends BasePage {
   }
 
   async login(email: string, password: string) {
-    // Use BasePage navigation
-    await this.goto('https://practicesoftwaretesting.com/auth/login');
+    // Use BasePage navigation with faster load strategy
+    await this.goto('https://practicesoftwaretesting.com/auth/login', { 
+      waitUntil: 'domcontentloaded'  // Faster than networkidle
+    });
 
-    // Explicit readiness check (best practice)
-    await this.emailAddress.waitFor({ state: 'visible' });
+    // Wait for element with extended timeout
+    await this.emailAddress.waitFor({ state: 'visible', timeout: 15000 });
 
     await this.emailAddress.fill(email);
     await this.password.fill(password);

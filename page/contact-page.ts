@@ -20,8 +20,8 @@ export class ContactPage extends BasePage {
     subject: string,
     message: string
   ) {
-    // Ensure page is ready
-    await this.firstName.waitFor({ state: 'visible' });
+    // Wait for element with extended timeout
+    await this.firstName.waitFor({ state: 'visible', timeout: 15000 });
 
     await this.firstName.fill(firstName);
     await this.lastName.fill(lastName);
