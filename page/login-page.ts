@@ -1,27 +1,24 @@
 import { BasePage } from './base-page';
-import { expect, type Page } from '@playwright/test';  // IMPORTANT: import Page type
+import { type Page } from '@playwright/test';
 
 export class LoginPage extends BasePage {
+  private readonly emailAddress = this.page.locator('#email');
+  private readonly password = this.page.locator('#password');
+  private readonly loginButton = this.page.locator("input[value='Login']");
 
-    readonly emailaddress = this.page.locator("#email");
-    readonly password = this.page.locator("#password");
-    readonly loginbtn=this.page.locator("//input[@value='Login']")
-    //readonly loginpageurl=this.page.goto("https://practicesoftwaretesting.com/auth/login");
-    
+  constructor(page: Page) {
+    super(page);
+  }
 
-    constructor(page: Page) {
+  async login(email: string, password: string) {
+    // Use BasePage navigation
+    await this.goto('https://practicesoftwaretesting.com/auth/login');
 
-        super(page);
-    }
+    // Explicit readiness check (best practice)
+    await this.emailAddress.waitFor({ state: 'visible' });
 
-    async login(email: string, password: string) {
-    await this.page.goto('https://practicesoftwaretesting.com/auth/login');
-    await this.emailaddress.fill(email);
+    await this.emailAddress.fill(email);
     await this.password.fill(password);
-    await this.loginbtn.click();
+    await this.loginButton.click();
+  }
 }
-
-    
-
-}
-
