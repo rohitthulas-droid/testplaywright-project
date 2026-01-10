@@ -38,6 +38,8 @@ jobs:
 
       - name: Run Playwright tests
         run: npm test
+        env:
+          CI: true
 
       - name: Upload HTML Report
         uses: actions/upload-artifact@v4

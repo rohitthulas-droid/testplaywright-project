@@ -9,10 +9,10 @@ export default defineConfig({
   reporter: 'html',
 
   use:  {
-    headless: process.env.CI ? true : false,  // headless on CI, headed locally
+    headless: true,  // always headless (required for CI/Linux)
     viewport: null,               // do not force a fixed viewport
     launchOptions: {
-      args: ['--start-maximized'], // ask Chrome to start maximized
+      args: process.env.CI ? ['--start-maximized', '--no-sandbox', '--disable-setuid-sandbox'] : ['--start-maximized'],
       slowMo: process.env.CI ? 0 : 1000,  // no slowdown in CI
     },
     trace: 'on-first-retry',
