@@ -16,7 +16,7 @@ async function sendReport() {
     secure: true,
     auth: {
       user: process.env.EMAIL_USER || "rohitthulase@zohomail.in",
-      pass: process.env.EMAIL_PASSWORD // ← Get from environment variable
+      pass: process.env.EMAIL_PASSWORD || "Playwright SMTP"
     },
     logger: true,
     debug: true
