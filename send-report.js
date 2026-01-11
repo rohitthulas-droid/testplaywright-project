@@ -3,27 +3,28 @@ const path = require("path");
 const fs = require("fs");
 
 async function sendReport() {
-  // Path to your Playwright HTML report file
   const reportPath = path.join(__dirname, "playwright-report", "index.html");
 
-  // Check if HTML report exists
   if (!fs.existsSync(reportPath)) {
     console.error("HTML report not found. Run tests first.");
     return;
   }
 
-  // Configure your email settings (Gmail example)
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.zoho.in",
+    port: 465,
+    secure: true,
     auth: {
-      user: "yourEmail@gmail.com",
-      pass: "your-app-password"  // Use Gmail App Password
-    }
+      user: process.env.EMAIL_USER || "rohitthulase@zohomail.in",
+      pass: process.env.EMAIL_PASSWORD // ← Get from environment variable
+    },
+    logger: true,
+    debug: true
   });
 
   const mailOptions = {
-    from: "yourEmail@gmail.com",
-    to: "product.manager@example.com",
+    from: `"QA Automation" <${process.env.EMAIL_USER || "rohitthulase@zohomail.in"}>`,
+    to: process.env.EMAIL_TO || "rohitthulase@gmail.com",
     subject: "Playwright Test Report",
     text: "Hi,\n\nPlease find attached the latest Playwright Test Report.\n\nRegards,\nQA Automation",
     attachments: [
@@ -35,8 +36,11 @@ async function sendReport() {
   };
 
   try {
+    await transporter.verify(); // ← IMPORTANT
+    console.log("SMTP connection verified");
+
     const info = await transporter.sendMail(mailOptions);
-    console.log("Report sent successfully: " + info.response);
+    console.log("Report sent successfully:", info.response);
   } catch (error) {
     console.error("Error sending report:", error);
   }
