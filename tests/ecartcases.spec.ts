@@ -7,6 +7,8 @@ test('Test - Add Mobile to Cart', async ({ page }) => {
   await ecartPage.addMobileToCartAndPlaceOrder();
    //Order confirmed
   await expect(page).toHaveURL(/index\.html$/);
+  await expect(page.getByText('Thank you for your purchase!')).toBeVisible();
+  
 
   
 });
